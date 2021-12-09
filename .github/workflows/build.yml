@@ -34,7 +34,7 @@ jobs:
         su hmkdarfdas <<'EOF'
         _yaydir=$(mktemp -d)
         git clone https://aur.archlinux.org/yay.git ${_yaydir}
-        cd ${_yaydir} && makepkg -si
+        cd ${_yaydir} && sudo makepkg -si
         EOF
       if: steps.user.outcome == 'success'
 
