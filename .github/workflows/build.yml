@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+
+jobs:
+  build:
+    if: "!contains(github.event.head_commit.message, '[auto]: ')"
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux
+      options: --privileged
+      volumes:
+        - /sys/fs/cgroup:/sys/fs/cgroup
+
+    steps:
+    - name: Checkout Main Repo
+      uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.PAT }}
+
+    - name: Install YAY
+      id: yay
+      run: |
+        _yaydir=$(mktemp -d)
+        pacman -Syu --noconfirm
+        pacman -S --noconfirm --needed git base-devel
+        git clone https://aur.archlinux.org/yay.git ${_yaydir}
+        cd ${_yaydir} && makepkg -si
+
+    - name: Install Build Dependencies
+      id: yay
+      run: |
+        yay -S --noconfirm pyoxidizer
+      if: steps.yay.outcome == 'success'
