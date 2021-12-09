@@ -19,18 +19,17 @@ jobs:
       with:
         token: ${{ secrets.PAT }}
 
-    - name: Setup User Account
+    - name: Setup Basics
       id: user
       run: |
         pacman -Syu --noconfirm
-        pacman -S --noconfirm sudo
+        pacman -S --noconfirm --needed sudo git base-devel go
         useradd -m hmkdarfdas
         echo 'hmkdarfdas ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
     - name: Install YAY
       id: yay
       run: |
-        pacman -S --noconfirm --needed git base-devel go
         su hmkdarfdas <<'EOF'
         _yaydir=$(mktemp -d)
         git clone https://aur.archlinux.org/yay.git ${_yaydir}
@@ -46,3 +45,15 @@ jobs:
         yay -S --noconfirm pyoxidizer
         EOF
       if: steps.yay.outcome == 'success'
+
+    - name: Build
+      id: build
+      run: |
+        su hmkdarfdas <<'EOF'
+        _builddir=$(mktemp -d)
+        git clone https://github.com/richardk80/spotify-ripper.git ${_builddir}
+        cd ${_builddir}
+        pyoxidizer build --target x86_64-unknown-linux-musl
+        find . -executable -type f
+        EOF
+      if: steps.dependencies.outcome == 'success'
