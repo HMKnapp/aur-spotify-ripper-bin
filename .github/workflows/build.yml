@@ -33,7 +33,7 @@ jobs:
         _yaydir=$(mktemp -d)
         pacman -S --noconfirm --needed git base-devel
         git clone https://aur.archlinux.org/yay.git ${_yaydir}
-        cd ${_yaydir} && su hmkdarfdas -c makepkg -si
+        cd ${_yaydir} && su hmkdarfdas -c 'makepkg -si'
       if: steps.user.outcome == 'success'
 
     - name: Install Build Dependencies
