@@ -31,7 +31,7 @@ jobs:
       id: yay
       run: |
         pacman -S --noconfirm --needed git base-devel
-        su hmkdarfdas <<EOF
+        su hmkdarfdas <<'EOF'
         _yaydir=$(mktemp -d)
         git clone https://aur.archlinux.org/yay.git ${_yaydir}
         cd ${_yaydir} && makepkg -si
