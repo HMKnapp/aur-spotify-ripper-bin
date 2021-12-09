@@ -42,7 +42,7 @@ jobs:
       run: |
         su hmkdarfdas <<'EOF'
         rustup target add x86_64-unknown-linux-musl
-        yay -S --noconfirm pyoxidizer rust-musl
+        yay -S --noconfirm pyoxidizer rust-musl musl
         EOF
       if: steps.yay.outcome == 'success'
 
