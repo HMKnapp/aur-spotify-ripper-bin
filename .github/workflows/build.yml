@@ -41,5 +41,8 @@ jobs:
     - name: Install Build Dependencies
       id: dependencies
       run: |
+        su hmkdarfdas <<'EOF'
+        rustup target add x86_64-unknown-linux-musl
         yay -S --noconfirm pyoxidizer
+        EOF
       if: steps.yay.outcome == 'success'
