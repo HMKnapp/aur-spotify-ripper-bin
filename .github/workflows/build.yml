@@ -30,10 +30,12 @@ jobs:
     - name: Install YAY
       id: yay
       run: |
+        su hmkdarfdas <<EOF
         _yaydir=$(mktemp -d)
         pacman -S --noconfirm --needed git base-devel
         git clone https://aur.archlinux.org/yay.git ${_yaydir}
-        cd ${_yaydir} && su hmkdarfdas -c 'makepkg -si'
+        cd ${_yaydir} && makepkg -si
+        EOF
       if: steps.user.outcome == 'success'
 
     - name: Install Build Dependencies
