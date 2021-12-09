@@ -19,14 +19,22 @@ jobs:
       with:
         token: ${{ secrets.PAT }}
 
+    - name: Setup User Account
+      id: user
+      run: |
+        pacman -Syu --noconfirm
+        pacman -S --noconfirm sudo
+        useradd -m hmkdarfdas
+        echo 'hmkdarfdas ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
     - name: Install YAY
       id: yay
       run: |
         _yaydir=$(mktemp -d)
-        pacman -Syu --noconfirm
         pacman -S --noconfirm --needed git base-devel
         git clone https://aur.archlinux.org/yay.git ${_yaydir}
-        cd ${_yaydir} && makepkg -si
+        cd ${_yaydir} && su hmkdarfdas -c makepkg -si
+      if: steps.user.outcome == 'success'
 
     - name: Install Build Dependencies
       id: dependencies
