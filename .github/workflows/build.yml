@@ -34,8 +34,11 @@ jobs:
         su hmkdarfdas <<'EOF'
         _yaydir=$(mktemp -d)
         git clone https://aur.archlinux.org/yay.git ${_yaydir}
-        cd ${_yaydir} && sudo makepkg -si
+        cd ${_yaydir}
         EOF
+        extra-x86_64-build -- -U hmkdarfdas
+        ls -l
+        sudo pacman -U *.pkg.*
       if: steps.user.outcome == 'success'
 
     - name: Install Build Dependencies
