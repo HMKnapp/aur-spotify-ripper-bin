@@ -30,9 +30,9 @@ jobs:
     - name: Install YAY
       id: yay
       run: |
+        pacman -S --noconfirm --needed git base-devel
         su hmkdarfdas <<EOF
         _yaydir=$(mktemp -d)
-        pacman -S --noconfirm --needed git base-devel
         git clone https://aur.archlinux.org/yay.git ${_yaydir}
         cd ${_yaydir} && makepkg -si
         EOF
