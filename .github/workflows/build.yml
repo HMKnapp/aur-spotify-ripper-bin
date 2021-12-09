@@ -29,7 +29,7 @@ jobs:
         cd ${_yaydir} && makepkg -si
 
     - name: Install Build Dependencies
-      id: yay
+      id: dependencies
       run: |
         yay -S --noconfirm pyoxidizer
       if: steps.yay.outcome == 'success'
