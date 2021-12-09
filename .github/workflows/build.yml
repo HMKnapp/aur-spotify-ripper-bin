@@ -42,7 +42,8 @@ jobs:
       run: |
         su hmkdarfdas <<'EOF'
         rustup target add x86_64-unknown-linux-musl
-        yay -S --noconfirm pyoxidizer rust-musl musl
+        yay -S --noconfirm rust-musl musl
+        cargo install pyoxidizer
         EOF
       if: steps.yay.outcome == 'success'
 
@@ -53,7 +54,8 @@ jobs:
         _builddir=$(mktemp -d)
         git clone https://github.com/richardk80/spotify-ripper.git ${_builddir}
         cd ${_builddir}
-        pyoxidizer init-config-file .
+        cp ${GITHUB_WORKSPACE}/pyoxidizer.bzl .
+        touch README.rst
         pyoxidizer build --target-triple x86_64-unknown-linux-musl
         find . -executable -type f
         EOF
