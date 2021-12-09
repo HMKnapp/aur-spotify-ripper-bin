@@ -30,7 +30,7 @@ jobs:
     - name: Install YAY
       id: yay
       run: |
-        pacman -S --noconfirm --needed git base-devel
+        pacman -S --noconfirm --needed git base-devel go
         su hmkdarfdas <<'EOF'
         _yaydir=$(mktemp -d)
         git clone https://aur.archlinux.org/yay.git ${_yaydir}
