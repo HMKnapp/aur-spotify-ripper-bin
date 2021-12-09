@@ -40,10 +40,12 @@ jobs:
     - name: Install Build Dependencies
       id: dependencies
       run: |
+        echo "::add-path::~/.cargo/bin:${PATH}"
         su hmkdarfdas <<'EOF'
         rustup target add x86_64-unknown-linux-musl
         yay -S --noconfirm rust-musl musl
         cargo install pyoxidizer
+        ls -l ~/.cargo/bin
         EOF
       if: steps.yay.outcome == 'success'
 
@@ -53,9 +55,10 @@ jobs:
         su hmkdarfdas <<'EOF'
         _builddir=$(mktemp -d)
         git clone https://github.com/richardk80/spotify-ripper.git ${_builddir}
+        cp pyoxidizer.bzl ${_builddir}/
         cd ${_builddir}
-        cp ${GITHUB_WORKSPACE}/pyoxidizer.bzl .
         touch README.rst
+        ls -l ~/.cargo/bin
         pyoxidizer build --target-triple x86_64-unknown-linux-musl
         find . -executable -type f
         EOF
